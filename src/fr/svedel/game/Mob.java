@@ -5,12 +5,7 @@ import java.util.List;
 
 import fr.svedel.engine.scene.Entity;
 
-public abstract class Mob {
-	private float x;
-	private float y;
-	private float width;
-	private float height;
-	
+public abstract class Mob extends Rectangle {
 	private float vx;
 	private float vy;
 	
@@ -19,12 +14,9 @@ public abstract class Mob {
 	private Entity tity = new Entity(ModelInstances.BLANK.getModel());
 	
 	public Mob(float x, float y, float width, float height) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		setDepth(World.MOB_DEPTH);
-		updateEntity();
+		super(x, y, width, height);
+		this.setDepth(World.MOB_DEPTH);
+		this.updateEntity();
 	}
 	
 	public Mob() {
@@ -35,59 +27,23 @@ public abstract class Mob {
 	
 	public void applieGravitiy(float delta) {
 		this.vy += World.GRAVITY_ACC;
-		this.y += this.vy;
+		this.setY(this.getY()+this.vy);
 	}
 	
 	public void updateEntityPos() {
-		tity.setPosition(x, y);
-		tity.updateModelMatrix();
+		this.tity.setPosition(this.getX(), this.getY());
+		this.tity.updateModelMatrix();
 	}
 	
 	public void updateEntityScale() {
-		tity.setScale(width, height);
-		tity.updateModelMatrix();
+		this.tity.setScale(this.getWidth(), this.getHeight());
+		this.tity.updateModelMatrix();
 	}
 	
 	public void updateEntity() {
-		tity.setScale(width, height);
-		tity.setPosition(x, y);
-		tity.updateModelMatrix();
-	}
-	
-	public float getX() {
-		return x;
-	}
-	
-	public void setX(float x) {
-		this.x = x;
-		//updateEntityPos();
-	}
-	
-	public float getY() {
-		return y;
-	}
-	
-	public void setY(float y) {
-		this.y = y;
-		//updateEntityPos();
-	}
-	
-	public float getWidth() {
-		return width;
-	}
-	
-	public void setWidth(float width) {
-		width = width;
-		//updateEntityScale();
-	}
-	
-	public float getHeight() {
-		return height;
-	}
-	
-	public void setHeight(float height) {
-		height = height;
-		//updateEntityScale();
+		this.tity.setScale(this.getWidth(), this.getHeight());
+		this.tity.setPosition(this.getX(), this.getY());
+		this.tity.updateModelMatrix();
 	}
 	
 	public float getVx() {
@@ -107,14 +63,14 @@ public abstract class Mob {
 	}
 	
 	public float getDepth() {
-		return tity.getDepth();
+		return this.tity.getDepth();
 	}
 	
 	public void setDepth(float depth) {
-		tity.setDepth(depth);
+		this.tity.setDepth(depth);
 	}
 	
 	public Entity getEntity() {
-		return tity;
+		return this.tity;
 	}
 }

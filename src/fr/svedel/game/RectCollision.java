@@ -1,15 +1,8 @@
 package fr.svedel.game;
 
-public class RectCollision {
-	private float x;
-	private float y;
-	private float width;
-	private float height;
+public class RectCollision extends Rectangle {
 	
-	private float oldX;
-	private float oldY;
-	private float oldWidth;
-	private float oldHeight;
+	private Rectangle oldRect;
 	
 	public static final int NO_COLLISION = 0;
 	public static final int IN_CONTACT = 1;
@@ -19,10 +12,8 @@ public class RectCollision {
 	public static final int TOP_COLLISION = 1<<4;
 	
 	public RectCollision(int x, int y, int width, int height) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
+		super(x, y, width, height);
+		this.oldRect = new Rectangle(x, y, width, height);
 	}
 	
 	public RectCollision(int width, int height) {
@@ -34,10 +25,7 @@ public class RectCollision {
 	}
 	
 	public void saveOldValues() {
-		this.oldX = this.x;
-		this.oldY = this.y;
-		this.oldWidth = this.width;
-		this.oldHeight = this.height;
+		this.oldRect.setValues(this);
 	}
 	
 	public int hasCollide(RectCollision rc) {
@@ -48,47 +36,15 @@ public class RectCollision {
 			collision += IN_CONTACT;
 			
 			// check witch side had collided
-			if (this.oldX+this.oldWidth < rc.oldX)
+			if (this.oldRect.getX()+this.oldRect.getWidth() < rc.oldRect.getX())
 				collision += RIGHT_COLLISION;
-			if (this.oldY+this.oldHeight < rc.oldY)
+			if (this.oldRect.getY()+this.oldRect.getHeight() < rc.oldRect.getY())
 				collision += BOTTOM_COLLISION;
-			if (this.oldX > rc.oldX+rc.oldWidth)
+			if (this.oldRect.getX() > rc.oldRect.getX()+rc.oldRect.getWidth())
 				collision += LEFT_COLLISION;
-			if (this.oldY > rc.oldY+rc.oldHeight)
+			if (this.oldRect.getY() > rc.oldRect.getY()+rc.oldRect.getHeight())
 				collision += TOP_COLLISION;
 		}
 		return collision;
-	}
-	
-	public float getX() {
-		return this.x;
-	}
-	
-	public void setX(float x) {
-		this.x = x;
-	}
-	
-	public float getY() {
-		return this.y;
-	}
-	
-	public void setY(float y) {
-		this.y = y;
-	}
-	
-	public float getWidth() {
-		return this.width;
-	}
-	
-	public void setWidth(float width) {
-		this.width = width;
-	}
-	
-	public float getHeight() {
-		return this.height;
-	}
-	
-	public void setHeight(float height) {
-		this.height = height;
 	}
 }
