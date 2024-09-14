@@ -10,13 +10,15 @@ import fr.svedel.engine.scene.lights.PointLight.Attenuation;
 import fr.svedel.engine.scene.lights.SceneLights;
 import fr.svedel.engine.scene.Scene;
 
-public class Room {
+public class World {
 	
 	public static final float PIXEL_SIZE = 1;
 	public static final float DEFAULT_LIGHT_DEPTH = 2*Cube.DEFAULT_WIDTH;
 	
 	public static final float SCENE_DEPTH = 0;
 	public static final float MOB_DEPTH = -0.1f;
+	
+	public static final float GRAVITY_ACC = .1f*PIXEL_SIZE;
 	
 	public static final Attenuation DEFAULT_ATTENUATION
 		= new Attenuation(0.01f, PIXEL_SIZE/10000, PIXEL_SIZE/300000);
@@ -31,11 +33,15 @@ public class Room {
 	private List<Entity> addedEntities = new ArrayList<>();
 	private List<PointLight> addedPointLights = new ArrayList<>();
 	
-	public Room() {
+	public World() {
 		initSpid();
 		initCubes();
 		initAmbientLight();
 		initCursorLight();
+	}
+	
+	public void actions(float delta) {
+		this.spid.actions(delta);
 	}
 	
 	private void initCubes() {

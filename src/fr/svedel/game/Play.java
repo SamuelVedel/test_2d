@@ -16,7 +16,7 @@ public class Play implements IAppLogic {
 	Scene scene;
 	Render render;*/
 	
-	Room room;
+	World world;
 	float scale = 3;
 	PointLight pointl;
 	
@@ -41,17 +41,20 @@ public class Play implements IAppLogic {
 		MeshInstances.initialize();
 		ModelInstances.initialize();
 		
-		room = new Room();
-		room.addEntitiesToScene(scene);
-		room.updateSceneLights(scene);
+		world = new World();
+		world.addEntitiesToScene(scene);
+		world.updateSceneLights(scene);
 	}
 	
 	@Override
 	public void input(Window window, Scene scene, long diffTimeMillis, boolean inputConsumed) {
+		float delta = diffTimeMillis/1000;
 		MouseInput mouseInput = window.getMouseInput();
 		float x = mouseInput.getMouseX()/scale;
 		float y = mouseInput.getMouseY()/scale;
-		room.moveCursorLight(x, y);
+		world.moveCursorLight(x, y);
+		
+		world.actions(delta);
 	}
 	
 	@Override

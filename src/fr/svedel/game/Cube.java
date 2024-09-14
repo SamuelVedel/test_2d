@@ -4,7 +4,7 @@ import fr.svedel.engine.graph.Model;
 import fr.svedel.engine.scene.Entity;
 
 public class Cube {
-	public static final float DEFAULT_WIDTH = 16*Room.PIXEL_SIZE;
+	public static final float DEFAULT_WIDTH = 16*World.PIXEL_SIZE;
 	public static final float DEFAULT_HEIGHT = DEFAULT_WIDTH;
 	
 	public static final Cube VOID = new Cube(0, 0, 0, 0, null);
