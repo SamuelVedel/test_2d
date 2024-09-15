@@ -12,6 +12,7 @@ public class Spider extends Mob {
 		super(x, y, WIDTH, HEIGHT);
 		this.getEntity().setTexturePath(texturePath);
 		this.getEntity().setNormalMapPath(normalMapPath);
+		this.getRectCollisions().add(new RectCollision(x, y, 0, 0, WIDTH, HEIGHT));
 	}
 	
 	public Spider() {
@@ -19,12 +20,17 @@ public class Spider extends Mob {
 	}
 	
 	@Override
-	public void actions(float delta) {
+	public void actions(float delta, World world) {
+		this.saveOldCollisions();
+		
 		this.applieGravitiy(delta);
 		if (this.getY() > 500) {
 			this.setY(50);
 			this.setVy(0);
 		}
+		
+		this.applieCollision(world);
+		
 		this.updateEntity();
 	}
 	

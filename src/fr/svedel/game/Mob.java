@@ -23,11 +23,39 @@ public abstract class Mob extends Rectangle {
 		this(0, 0, 0, 0);
 	}
 	
-	public abstract void actions(float delta);
+	public abstract void actions(float delta, World world);
 	
 	public void applieGravitiy(float delta) {
 		this.vy += World.GRAVITY_ACC;
 		this.setY(this.getY()+this.vy);
+	}
+	
+	public void applieCollision(World world) {
+		updateCollisions();
+		for (int i = rectCollisions.size()-1; i >= 0; --i) {
+			RectCollision rc = rectCollisions.get(i);
+			float x = rc.getX();
+			float y = rc.getY();
+			float width = rc.getWidth();
+			float height = rc.getHeight();
+			
+			int startx = (int)(x/Cube.DEFAULT_WIDTH)-1;
+			int endx = (int)((x+width)/Cube.DEFAULT_WIDTH)+1;
+			int starty = (int)(y/Cube.DEFAULT_HEIGHT)-1;
+			int endy = (int)((x+height)/Cube.DEFAULT_HEIGHT)+1;
+			
+			for (int iy = starty; iy <= endy; ++iy) {
+				for (int ix = startx; ix <= endx; ++ix) {
+					if (!world.isVoid(ix, iy) && !world.isEmpty(ix, iy)) {
+						Cube cube = world.get(ix, iy);
+						if (cube.getType() == Cube.BORDER_TYPE) {
+							Border border = (Border) cube;
+							border.collide(this);
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	public void updateEntityPos() {
@@ -44,6 +72,18 @@ public abstract class Mob extends Rectangle {
 		this.tity.setScale(this.getWidth(), this.getHeight());
 		this.tity.setPosition(this.getX(), this.getY());
 		this.tity.updateModelMatrix();
+	}
+	
+	public void saveOldCollisions() {
+		for (int i = rectCollisions.size()-1; i >= 0; --i) {
+			rectCollisions.get(i).saveOldValues();
+		}
+	}
+	
+	public void updateCollisions() {
+		for (int i = rectCollisions.size()-1; i >= 0; --i) {
+			rectCollisions.get(i).updatePosition(this.getX(), this.getY());
+		}
 	}
 	
 	public float getVx() {
@@ -72,5 +112,9 @@ public abstract class Mob extends Rectangle {
 	
 	public Entity getEntity() {
 		return this.tity;
+	}
+	
+	public List<RectCollision> getRectCollisions() {
+		return this.rectCollisions;
 	}
 }

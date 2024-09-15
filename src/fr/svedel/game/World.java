@@ -41,7 +41,7 @@ public class World {
 	}
 	
 	public void actions(float delta) {
-		this.spid.actions(delta);
+		this.spid.actions(delta, this);
 	}
 	
 	private void initCubes() {
@@ -50,8 +50,9 @@ public class World {
 			for (int ix = 0; ix < cubes[iy].length; ++ix) {
 				if (iy > 8 && iy < 12) cubes[iy][ix] = null;
 				else {
-					cubes[iy][ix] = new Cube(ix*Cube.DEFAULT_WIDTH, iy*Cube.DEFAULT_HEIGHT,
-											 ModelInstances.BRIK.getModel());
+					cubes[iy][ix] = new Border(ix*Cube.DEFAULT_WIDTH, iy*Cube.DEFAULT_HEIGHT,
+											   RectCollision.TOP_COLLISION,
+											   ModelInstances.BRIK.getModel());
 					addedEntities.add(cubes[iy][ix].getEntity());
 				}
 			}

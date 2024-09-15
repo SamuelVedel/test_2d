@@ -9,11 +9,15 @@ public class Cube extends Rectangle {
 	
 	public static final Cube VOID = new Cube(0, 0, 0, 0, null);
 	
+	public static final int DEFAULT_TYPE = 0;
+	public static final int BORDER_TYPE = 1;
+	protected int type;
+	
 	private Entity tity;
 	
 	public Cube(float x, float y, float width, float height, Model model) {
 		super(x, y, width, height);
-		
+		type = DEFAULT_TYPE;
 		initTity(model);
 	}
 	
@@ -22,10 +26,10 @@ public class Cube extends Rectangle {
 	}
 	
 	private void initTity(Model model) {
-		tity = new Entity(model);
-		tity.setScale(width, height);
-		tity.setPosition(x, y);
-		tity.updateModelMatrix();
+		this.tity = new Entity(model);
+		this.tity.setScale(getWidth(), getHeight());
+		this.tity.setPosition(getX(), getY());
+		this.tity.updateModelMatrix();
 	}
 	
 	public Entity getEntity() {
@@ -58,5 +62,9 @@ public class Cube extends Rectangle {
 		super.setHeight(height);
 		tity.setScale(getWidth(), getHeight());
 		tity.updateModelMatrix();
+	}
+	
+	public int getType() {
+		return this.type;
 	}
 }
