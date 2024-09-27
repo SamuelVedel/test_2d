@@ -1,5 +1,7 @@
 package fr.svedel.game;
 
+import org.lwjgl.glfw.GLFW;
+
 import fr.svedel.engine.Engine;
 import fr.svedel.engine.graph.Render;
 import fr.svedel.engine.IAppLogic;
@@ -16,9 +18,8 @@ public class Play implements IAppLogic {
 	Scene scene;
 	Render render;*/
 	
-	World world;
-	float scale = 3;
-	PointLight pointl;
+	private World world;
+	private PointLight pointl;
 	
 	public Play() {
 		Window.WindowOptions winOpt = new Window.WindowOptions();
@@ -48,19 +49,20 @@ public class Play implements IAppLogic {
 	
 	@Override
 	public void input(Window window, Scene scene, long diffTimeMillis, boolean inputConsumed) {
-		float delta = diffTimeMillis/1000;
 		MouseInput mouseInput = window.getMouseInput();
-		float x = mouseInput.getMouseX()/scale;
-		float y = mouseInput.getMouseY()/scale;
-		world.moveCursorLight(x, y);
-		
-		world.actions(delta);
+		/*float x = mouseInput.getMouseX()/scale;
+		  float y = mouseInput.getMouseY()/scale;*/
+		this.world.input(window);
 	}
 	
 	@Override
 	public void update(Window window, Scene scene, long diffTimeMillis) {
-		scene.getCamera().setScale(scale*2f/window.getBufferWidth(),
-								   scale*-2f/window.getBufferHeight());
+		float delta = (float)diffTimeMillis/1000;
+		
+		this.world.actions(delta);
+		
+		scene.getCamera().setScale(world.getScale()*2f/window.getBufferWidth(),
+								   world.getScale()*-2f/window.getBufferHeight());
 		scene.getCamera().updateViewMatrix();
 	}
 }

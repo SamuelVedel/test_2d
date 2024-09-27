@@ -5,7 +5,7 @@ public class RectCollision extends Rectangle {
 	private float anchorX;
 	private float anchorY;
 	
-	private Rectangle oldRect;
+	/*private*/ public Rectangle oldRect;
 	
 	public static final int NO_COLLISION = 0;
 	public static final int IN_CONTACT = 1;
@@ -19,7 +19,8 @@ public class RectCollision extends Rectangle {
 		super(x+anchorX, y+anchorY, width, height);
 		this.anchorX = anchorX;
 		this.anchorY = anchorY;
-		this.oldRect = new Rectangle(x+anchorX, y+anchorY, width, height);
+		this.oldRect = new Rectangle(this.getX(), this.getY(),
+									 this.getWidth(), this.getHeight());
 	}
 	
 	public RectCollision(float anchorX, float anchorY, float width, float height) {
@@ -41,28 +42,27 @@ public class RectCollision extends Rectangle {
 	public int hasCollide(RectCollision rc) {
 		int collision = NO_COLLISION;
 		// collision test
-		if (this.x+this.width > rc.x && this.x < rc.x+rc.width
-			&& this.y+this.height > rc.y && this.y < rc.y+rc.height) {
+		if (this.getX()+this.getWidth() > rc.getX() && this.getX() < rc.getX()+rc.getWidth()
+			&& this.getY()+this.getHeight() > rc.getY() && this.getY() < rc.getY()+rc.getHeight()) {
 			collision |= IN_CONTACT;
 			
-			// check witch side had collided
-			if (this.oldRect.getX()+this.oldRect.getWidth() < rc.oldRect.getX())
+			// check witch side has collided
+			if (this.oldRect.getX()+this.oldRect.getWidth() <= rc.oldRect.getX())
 				collision |= RIGHT_COLLISION;
-			if (this.oldRect.getY()+this.oldRect.getHeight() < rc.oldRect.getY())
+			if (this.oldRect.getY()+this.oldRect.getHeight() <= rc.oldRect.getY())
 				collision |= BOTTOM_COLLISION;
-			if (this.oldRect.getX() > rc.oldRect.getX()+rc.oldRect.getWidth())
+			if (this.oldRect.getX() >= rc.oldRect.getX()+rc.oldRect.getWidth())
 				collision |= LEFT_COLLISION;
-			if (this.oldRect.getY() > rc.oldRect.getY()+rc.oldRect.getHeight())
+			if (this.oldRect.getY() >= rc.oldRect.getY()+rc.oldRect.getHeight())
 				collision |= TOP_COLLISION;
 		}
 		
-		System.out.println("a: "+collision);
 		return collision;
 	}
 	
 	public void updatePosition(float x, float y) {
-		this.x = x+this.anchorX;
-		this.y = y+this.anchorY;
+		this.setX(x+this.anchorX);
+		this.setY(y+this.anchorY);
 	}
 	
 	public float getAnchorX() {

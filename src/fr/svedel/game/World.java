@@ -3,12 +3,14 @@ package fr.svedel.game;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.svedel.engine.MouseInput;
 import fr.svedel.engine.scene.Entity;
 import fr.svedel.engine.scene.lights.AmbientLight;
 import fr.svedel.engine.scene.lights.PointLight;
 import fr.svedel.engine.scene.lights.PointLight.Attenuation;
 import fr.svedel.engine.scene.lights.SceneLights;
 import fr.svedel.engine.scene.Scene;
+import fr.svedel.engine.Window;
 
 public class World {
 	
@@ -18,10 +20,12 @@ public class World {
 	public static final float SCENE_DEPTH = 0;
 	public static final float MOB_DEPTH = -0.1f;
 	
-	public static final float GRAVITY_ACC = .1f*PIXEL_SIZE;
+	public static final float GRAVITY_ACC = 9.80665f*Cube.DEFAULT_HEIGHT;
 	
 	public static final Attenuation DEFAULT_ATTENUATION
 		= new Attenuation(0.01f, PIXEL_SIZE/10000, PIXEL_SIZE/300000);
+	
+	private float scale = 3;
 	
 	private Cube[][] cubes;
 	
@@ -40,6 +44,14 @@ public class World {
 		initCursorLight();
 	}
 	
+	public void input(Window window) {
+		MouseInput mouseInput = window.getMouseInput();
+		float x = mouseInput.getMouseX()/scale;
+		float y = mouseInput.getMouseY()/scale;
+		this.moveCursorLight(x, y);
+		this.spid.input(window);
+	}
+	
 	public void actions(float delta) {
 		this.spid.actions(delta, this);
 	}
@@ -51,7 +63,9 @@ public class World {
 				if (iy > 8 && iy < 12) cubes[iy][ix] = null;
 				else {
 					cubes[iy][ix] = new Border(ix*Cube.DEFAULT_WIDTH, iy*Cube.DEFAULT_HEIGHT,
-											   RectCollision.TOP_COLLISION,
+											   RectCollision.TOP_COLLISION
+											   //| RectCollision.RIGHT_COLLISION
+											   ,
 											   ModelInstances.BRIK.getModel());
 					addedEntities.add(cubes[iy][ix].getEntity());
 				}
@@ -111,5 +125,9 @@ public class World {
 			sl.getPointLights().add(addedPointLights.get(i));
 			addedPointLights.remove(i);
 		}
+	}
+	
+	public float getScale() {
+		return this.scale;
 	}
 }

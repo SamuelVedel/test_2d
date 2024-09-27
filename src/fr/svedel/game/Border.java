@@ -30,23 +30,20 @@ public class Border extends Cube {
 		return collision&(this.collisionType|RectCollision.IN_CONTACT);
 	}
 	
-	public void collide(Mob mob) {
-		List<RectCollision> mobCollisions = mob.getRectCollisions();
-		for (int i = mobCollisions.size()-1; i >= 0; --i) {
-			RectCollision rc = mobCollisions.get(i);
-			int collision = hasCollide(rc);
-			System.out.println("b: "+collision);
-			//System.out.println(collision);
-			if ((collision&RectCollision.RIGHT_COLLISION) != 0)
-				mob.setX(this.getX()+this.getWidth()-rc.getAnchorX());
-			if ((collision&RectCollision.BOTTOM_COLLISION) != 0)
-				mob.setY(this.getY()+this.getHeight()-rc.getAnchorY());
-			if ((collision&RectCollision.LEFT_COLLISION) != 0)
-				mob.setY(this.getY()-rc.getWidth()-rc.getAnchorX());
-			if ((collision&RectCollision.TOP_COLLISION) != 0) {
-				mob.setX(this.getX()-rc.getHeight()-rc.getAnchorY());
-				mob.setVy(0);
-			}
+	public void collide(Mob mob, RectCollision rc) {
+		int collision = hasCollide(rc);
+		if ((collision&RectCollision.RIGHT_COLLISION) != 0) {
+			mob.setX(this.getX()+this.getWidth()-rc.getAnchorX());
+		}
+		if ((collision&RectCollision.BOTTOM_COLLISION) != 0) {
+			mob.setY(this.getY()+this.getHeight()-rc.getAnchorY());
+		}
+		if ((collision&RectCollision.LEFT_COLLISION) != 0) {
+			mob.setY(this.getY()-rc.getWidth()-rc.getAnchorX());
+		}
+		if ((collision&RectCollision.TOP_COLLISION) != 0) {
+			mob.setY(this.getY()-rc.getHeight()-rc.getAnchorY());
+			mob.resetFall();
 		}
 	}
 }

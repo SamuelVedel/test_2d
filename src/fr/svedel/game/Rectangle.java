@@ -1,10 +1,10 @@
 package fr.svedel.game;
 
 public class Rectangle {
-	protected float x;
-	protected float y;
-	protected float width;
-	protected float height;
+	private float x;
+	private float y;
+	private float width;
+	private float height;
 	
 	public Rectangle(float x, float y, float width, float height) {
 		this.x = x;
@@ -40,12 +40,20 @@ public class Rectangle {
 		this.x = x;
 	}
 	
+	public void addX(float deltaX) {
+		this.x += deltaX;
+	}
+	
 	public float getY() {
 		return this.y;
 	}
 	
 	public void setY(float y) {
 		this.y = y;
+	}
+	
+	public void addY(float deltaY) {
+		this.y += deltaY;
 	}
 	
 	public float getWidth() {
