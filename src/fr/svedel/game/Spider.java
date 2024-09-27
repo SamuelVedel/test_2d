@@ -6,8 +6,8 @@ import fr.svedel.engine.Window;
 
 public class Spider extends Mob {
 	
-	private static final float WIDTH = 20*World.PIXEL_SIZE*2;
-	private static final float HEIGHT = 9*World.PIXEL_SIZE*2;
+	private static final float WIDTH = 20*World.PIXEL_SIZE;
+	private static final float HEIGHT = 9*World.PIXEL_SIZE;
 	
 	private static final float DEFAULT_VX = 5f*Cube.DEFAULT_WIDTH;
 	private static final float DEFAULT_VJUMP = -5f*Cube.DEFAULT_WIDTH;

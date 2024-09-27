@@ -32,18 +32,19 @@ public class Border extends Cube {
 	
 	public void collide(Mob mob, RectCollision rc) {
 		int collision = hasCollide(rc);
-		if ((collision&RectCollision.RIGHT_COLLISION) != 0) {
-			mob.setX(this.getX()+this.getWidth()-rc.getAnchorX());
-		}
-		if ((collision&RectCollision.BOTTOM_COLLISION) != 0) {
-			mob.setY(this.getY()+this.getHeight()-rc.getAnchorY());
-		}
-		if ((collision&RectCollision.LEFT_COLLISION) != 0) {
-			mob.setY(this.getY()-rc.getWidth()-rc.getAnchorX());
-		}
 		if ((collision&RectCollision.TOP_COLLISION) != 0) {
 			mob.setY(this.getY()-rc.getHeight()-rc.getAnchorY());
 			mob.resetFall();
+		}
+		else if ((collision&RectCollision.BOTTOM_COLLISION) != 0) {
+			mob.setY(this.getY()+this.getHeight()-rc.getAnchorY());
+			mob.setVy(0);
+		}
+		else if ((collision&RectCollision.RIGHT_COLLISION) != 0) {
+			mob.setX(this.getX()+this.getWidth()-rc.getAnchorX());
+		}
+		else if ((collision&RectCollision.LEFT_COLLISION) != 0) {
+			mob.setX(this.getX()-rc.getWidth()-rc.getAnchorX());
 		}
 	}
 }

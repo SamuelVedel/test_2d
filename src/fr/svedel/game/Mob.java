@@ -42,9 +42,9 @@ public abstract class Mob extends Rectangle {
 			float width = rc.getWidth();
 			float height = rc.getHeight();
 			
-			int startx = (int)(x/Cube.DEFAULT_WIDTH)-1;
+			int startx = (int)(x/Cube.DEFAULT_WIDTH);
 			int endx = (int)((x+width)/Cube.DEFAULT_WIDTH)+1;
-			int starty = (int)(y/Cube.DEFAULT_HEIGHT)-1;
+			int starty = (int)(y/Cube.DEFAULT_HEIGHT);
 			int endy = (int)((y+height)/Cube.DEFAULT_HEIGHT)+1;
 			
 			for (int iy = starty; iy <= endy; ++iy) {
@@ -54,6 +54,7 @@ public abstract class Mob extends Rectangle {
 						if (cube.getType() == Cube.BORDER_TYPE) {
 							Border border = (Border) cube;
 							border.collide(this, rc);
+							updateCollisions();
 						}
 					}
 				}

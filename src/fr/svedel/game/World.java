@@ -59,18 +59,36 @@ public class World {
 	private void initCubes() {
 		cubes = new Cube[20][20];
 		for (int iy = 0; iy < cubes.length; ++iy) {
-			for (int ix = 0; ix < cubes[iy].length; ++ix) {
-				if (iy > 8 && iy < 12) cubes[iy][ix] = null;
+			for (int ix = 3; ix < cubes[iy].length; ++ix) {
+				if (/*iy > 8 &&*/ iy < 12) cubes[iy][ix] = null;
 				else {
 					cubes[iy][ix] = new Border(ix*Cube.DEFAULT_WIDTH, iy*Cube.DEFAULT_HEIGHT,
 											   RectCollision.TOP_COLLISION
-											   //| RectCollision.RIGHT_COLLISION
+											   | RectCollision.RIGHT_COLLISION
+											   | RectCollision.LEFT_COLLISION
+											   | RectCollision.BOTTOM_COLLISION
 											   ,
 											   ModelInstances.BRIK.getModel());
 					addedEntities.add(cubes[iy][ix].getEntity());
 				}
 			}
 		}
+		int iy = 10;
+		int ix = 5;
+		cubes[iy][ix] = new Border(ix*Cube.DEFAULT_WIDTH, iy*Cube.DEFAULT_HEIGHT,
+								   RectCollision.RIGHT_COLLISION
+								   | RectCollision.LEFT_COLLISION
+								   | RectCollision.BOTTOM_COLLISION
+								   | RectCollision.TOP_COLLISION,
+								   ModelInstances.BRIK.getModel());
+		addedEntities.add(cubes[iy][ix].getEntity());
+		
+		iy = 11;
+		ix = 7;
+		cubes[iy][ix] = new Border(ix*Cube.DEFAULT_WIDTH, iy*Cube.DEFAULT_HEIGHT,
+								   RectCollision.TOP_COLLISION,
+								   ModelInstances.BRIK.getModel());
+		addedEntities.add(cubes[iy][ix].getEntity());
 	}
 	
 	private void initSpid() {
